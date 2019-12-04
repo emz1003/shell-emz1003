@@ -8,7 +8,7 @@ char ** parse_args(char *line, char * sep){
   char *curr = line;
   int count = 0;
   while (curr){
-    ans[count] = strsep(&curr, " ");
+    ans[count] = strsep(&curr, sep);
     count++;
   }
   return ans;
