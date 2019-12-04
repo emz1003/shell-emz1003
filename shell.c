@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int execute_c(char * command);
+int execute_c(char * command); //E and K
 
 char ** parse_args(char *line, char * sep){
   char ** ans;
@@ -14,6 +14,9 @@ char ** parse_args(char *line, char * sep){
   return ans;
 }
 
-void changedir(); //E
-
-void exit(); //K
+void changedir(char *input){ //K
+  char s[100];
+  printf("The current working directory: %s\n", getcwd(s, 100));
+  chdir(input);
+  printf("The current working directory: %s\n", getcwd(s, 100));
+}
