@@ -1,10 +1,14 @@
 #include "shell.h"
 
-int main () {
-   char line[] = "ls -a -l";
-   printf("Using parse_args to run ls -a -l:\n");
-   char ** args = parse_args(line, " ");
-   execvp(args[0], args);
+int main (int argc, char *argv[]) {
+   char input[1024];
+   while(strcmp(input, "exit")) {
+     printf("[shell]: ");
+     fgets(input, sizeof input, stdin);
+     input[strlen(input) - 1] = '\0';
+     char ** args = parse_args(input, " ");
+     execvp(args[0], args);
+   }
 
    //changedir("");
 }

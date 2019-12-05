@@ -5,6 +5,7 @@
 #include <string.h>
 #include <errno.h>
 #include <dirent.h>
+#include <sys/types.h>
 
 int execute_c(char * command);
 char ** parse_args(char *line, char * sep); //K
