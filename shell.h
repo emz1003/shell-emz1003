@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <dirent.h>
 
-int execute_c(char * command);
+int execute(char * line);
 char ** parse_args(char *line, char * sep); //K
 void changedir(); //E
-void exit(); //K
+int is_forkable(char * arg);
