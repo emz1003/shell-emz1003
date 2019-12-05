@@ -4,20 +4,25 @@ int execute(char * line) {
   char ** commands = parse_args(line, ";");
   while(*commands) {
     char ** args = parse_args(*commands, " ");
-    commands++;
+    int status;
+    wait(&status);
     if (is_forkable(*args))
     {
-      printf("it's forkable\n");
-      int status;
-      pid_t child = fork();
-      wait(&status);
-      execvp(*args, args);
-      exit(child);
+      int child = fork();
+      if(child == 0){
+        execvp(*args, args);
+        exit(0);
+      } else {
+        wait(&status);
+      }
     }
     else
     {
       printf("not implemented yet\n");
+      execvp(*args, args);
     }
+
+    commands++;
   }
   return 0;
 
@@ -39,6 +44,9 @@ char ** parse_args(char *line, char * sep){
   return ans;
 }
 
-void changedir(); //E
-
-void exit(); //K
+void changedir(char *input){ //K
+  char s[100];
+  printf("The current working directory: %s\n", getcwd(s, 100));
+  chdir(input);
+  printf("The current working directory: %s\n", getcwd(s, 100));
+}
