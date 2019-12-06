@@ -5,9 +5,9 @@ int execute(char * line) {
   while(*commands) {
     char ** args = parse_args(*commands, " ");
     int status;
-    wait(&status);
-    if (is_forkable(*args))
-    {
+    if (strcmp(*args, "cd"))
+    { 
+      wait(&status);
       int child = fork();
       if(child == 0){
         execvp(*args, args);
@@ -16,20 +16,16 @@ int execute(char * line) {
         wait(&status);
       }
     }
-    else
-    {
-      printf("not implemented yet\n");
-      execvp(*args, args);
+    else {
+      args++;
+      printf("%s\n", *args);
+      changedir(*args);
     }
 
     commands++;
   }
   return 0;
 
-}
-
-int is_forkable(char * arg) {
-  return strcmp(arg, "cd") || strcmp(arg, "exit");
 }
 
 char ** parse_args(char *line, char * sep){
@@ -44,9 +40,7 @@ char ** parse_args(char *line, char * sep){
   return ans;
 }
 
-void changedir(char *input){ //K
+void changedir(char *input){
   char s[100];
-  printf("The current working directory: %s\n", getcwd(s, 100));
   chdir(input);
-  printf("The current working directory: %s\n", getcwd(s, 100));
 }
