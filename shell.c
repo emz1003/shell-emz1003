@@ -3,9 +3,9 @@
 int execute(char * line) {
   char ** commands = parse_args(line, ";");
   while(*commands) {
-    char ** args = parse_args(*commands, " ");
+    char ** args = parse_args(*commands, " "); // string array of cammands
     int status;
-    if (strcmp(*args, "cd"))
+    if (strcmp(line, "cd") && strcmp(line, "exit")) // if not cd or exit
     { 
       wait(&status);
       int child = fork();
@@ -15,13 +15,11 @@ int execute(char * line) {
       } else {
         wait(&status);
       }
+    } else if (!strcmp(*args, "cd")){ // change directory
+      change_dir(*++args);
+    } else { // returns true for ending the program
+      return 1;
     }
-    else {
-      args++;
-      printf("%s\n", *args);
-      changedir(*args);
-    }
-
     commands++;
   }
   return 0;
@@ -40,7 +38,7 @@ char ** parse_args(char *line, char * sep){
   return ans;
 }
 
-void changedir(char *input){
+void change_dir(char *input){
   char s[100];
   chdir(input);
 }

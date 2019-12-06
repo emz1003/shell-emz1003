@@ -8,6 +8,5 @@
 #include <sys/types.h>
 
 int execute(char * line);
-char ** parse_args(char *line, char * sep); //K
-void changedir(); //E
-int is_forkable(char * arg);
+char ** parse_args(char * line, char * sep);
+void change_dir( char * input);
