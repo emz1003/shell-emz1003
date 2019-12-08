@@ -6,7 +6,7 @@ int execute(char * line) {
     char ** args = parse_args(*commands, " "); // string array of cammands
     int status;
     if (strcmp(line, "cd") && strcmp(line, "exit")) // if not cd or exit
-    { 
+    {
       wait(&status);
       int child = fork();
       if(child == 0){
@@ -41,4 +41,16 @@ char ** parse_args(char *line, char * sep){
 void change_dir(char *input){
   char s[100];
   chdir(input);
+}
+
+void redirect(char* redir, char *file){
+  if (strcmp(redir, ">")){ //then redir is <
+    dup(stdin);
+    dup2(file, stdin);
+
+  }
+  else { //then redir is >
+    dup(stdout);
+    dup2(file, stdout);
+  }
 }

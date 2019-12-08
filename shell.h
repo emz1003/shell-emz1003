@@ -10,3 +10,4 @@
 int execute(char * line);
 char ** parse_args(char * line, char * sep);
 void change_dir( char * input);
+void redirect(char* redir, char *file);
