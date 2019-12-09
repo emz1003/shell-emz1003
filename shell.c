@@ -37,21 +37,29 @@ void change_dir(char *input){
 }
 
 void redirect(char** args, int * status){
-  // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
-  // find filename by taking the argument after the < or >
-  char *redir; // holds < or >
-  char ** argseg; // holds the arguments before < or >
-  char * file;
-  while(args) {
-    if (strcmp(*args, ">") && strcmp(*args, "<")){ //if *argmem is not < or > 
-      argseg = *args;
-      argseg++;
-      args++;
-    } else {
-      argseg = *args;
-      file = *++args;
-    } 
+  int child = fork();
+  if (child == 0)
+  {
+    // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
+    // find filename by taking the argument after the < or >
+    char *redir;   // holds < or >
+    char **argseg = malloc(); // holds the arguments before < or >
+    char *file;
+    while (args)
+    {
+      if (strcmp(*args, ">") && strcmp(*args, "<"))
+      { //if *argmem is not < or >
+        printf("this goes into argseg: %s\n", *args);
+        *argseg = *args;
+        argseg++;
+        args++;
+      } else {
+        redir = *args;
+        file = *++args;
+        break;
+     } 
   }
+
   int f;
   int backup;
   if (strcmp(redir, ">")){ //then redir is <
@@ -64,8 +72,13 @@ void redirect(char** args, int * status){
     backup = dup(STDIN_FILENO);
     dup2(f, STDIN_FILENO);
   }
-
-  fork_run(argseg, status);
+    execvp(*args, args);
+    exit(0);
+  }
+  else
+  {
+    wait(status);
+  }
 }
 
 int is_redir(char ** args) {

@@ -13,3 +13,4 @@ char ** parse_args(char * line, char * sep);
 void change_dir( char * input);
 void redirect(char** args, int * status);
 void fork_run( char ** args, int * status);
+int is_redir(char **args);
