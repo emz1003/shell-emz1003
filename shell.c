@@ -43,11 +43,10 @@ void change_dir(char *input){
   chdir(input);
 }
 
-void redirect(char* redir, char *file){
+void redirect(char* redir, char* file){
   if (strcmp(redir, ">")){ //then redir is <
     dup(stdin);
     dup2(file, stdin);
-
   }
   else { //then redir is >
     dup(stdout);
