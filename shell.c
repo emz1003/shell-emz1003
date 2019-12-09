@@ -37,19 +37,15 @@ void change_dir(char *input){
 }
 
 void redirect(char** args, int * status){
-  int child = fork();
-  if (child == 0)
-  {
     // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
     // find filename by taking the argument after the < or >
     char *redir;   // holds < or >
-    char **argseg = malloc(); // holds the arguments before < or >
+    char **argseg = malloc(1024); // holds the arguments before < or >
     char *file;
     while (args)
     {
       if (strcmp(*args, ">") && strcmp(*args, "<"))
       { //if *argmem is not < or >
-        printf("this goes into argseg: %s\n", *args);
         *argseg = *args;
         argseg++;
         args++;
@@ -57,28 +53,28 @@ void redirect(char** args, int * status){
         redir = *args;
         file = *++args;
         break;
-     } 
+     }
   }
 
-  int f;
-  int backup;
-  if (strcmp(redir, ">")){ //then redir is <
-    f = open(file, O_RDONLY | O_EXCL | O_CREAT);
-    backup = dup(STDIN_FILENO);
-    dup2(f, STDIN_FILENO);
-  }
-  else { //then redir is >
-    f = open(file, O_WRONLY | O_EXCL | O_CREAT);
-    backup = dup(STDIN_FILENO);
-    dup2(f, STDIN_FILENO);
-  }
-    execvp(*args, args);
-    exit(0);
-  }
-  else
-  {
-    wait(status);
-  }
+  // int f;
+  // int backup;
+  // f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
+  // if (f < 0){
+  //   f = open(file, O_RDWR);
+  // }
+  // if (strcmp(redir, ">")){ //then redir is <
+  //   printf("%d\n", f);
+  //   backup = dup(STDIN_FILENO);
+  //   dup2(f, STDIN_FILENO);
+  // }
+  // else { //then redir is >
+  //   printf("%d\n", f);
+  //   backup = dup(STDOUT_FILENO);
+  //   dup2(STDOUT_FILENO, f);
+  // }
+   fork_run(argseg, status);
+  // close(f);
+  // dup2(f, backup);
 }
 
 int is_redir(char ** args) {
@@ -102,5 +98,3 @@ void fork_run(char ** args, int * status) {
     wait(status);
   }
 }
-
-
