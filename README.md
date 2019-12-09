@@ -6,7 +6,7 @@ Systems Programming Project 1
 1) Our shell reads in one line at a time like it should. It will keep prompting the user
 for a command until "exit" is inputted or other shortcuts such as CTRL-C are used.
 Both cd and exit can be used in our shell. Our shell can also read and separate multiple
-commands on one line with ;.
+commands on one line with ;. We are assuming that every command line is being parsed with a delimiter of one character long.
 
 2) A description of what features you attempted to implement but were unsuccessful
 
@@ -28,5 +28,5 @@ void change_dir( char * input);
   //Returns nothing
   //Input is the directory that the function is changing into
   //This change_dir function acts as the cd function for a shell
-  
+
 void redirect(char* redir, char* file);
