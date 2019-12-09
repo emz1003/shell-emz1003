@@ -14,8 +14,8 @@ commands on one line with ;.
 
 4) Our function headers are also listed in shell.h!
 int execute(char * line);
-  //Returns 0 to continue executing, 1 to end the program
-  //Line is the command line input
+  //Returns 0 to continue executing, 1 to end the program \n
+  //Line is the command line input \n
   //This execute function forks and exes the command line argument
 char ** parse_args(char * line, char * sep);
   //Returns a char** that represents the individual tokens after parsing
