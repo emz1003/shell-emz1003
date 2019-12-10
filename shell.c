@@ -107,15 +107,24 @@ int is_pipe(char **args){
 }
 
 void pipes(char ** args, int * status){
-  //char *redir;   // holds |
-  char **argseg = malloc(1024); // holds the arguments after |
-  char *file;
-  while (args){
-    if (!strcmp(*args, "|") //if args is up to the |
-      argseg = *++args;
-      break;
+  char **output = malloc(1024); // holds the arguments after |
+  char **input = malloc(1024); //holds the arguments before |
+    while(strcmp(*args, "|")){ //if args is not |
+      *input = *args;
+      input++;
+      args++;
     }
-  }
+    while(args) {
+      *output = *args;
+      output++;
+      args++;
+    }
+  popen(input, output);
+  fork_run(output, status);
+  free(output);
+  free(input);
+}
+
 
 void fork_run(char ** args, int * status) {
   int child = fork();
