@@ -26,8 +26,17 @@ char ** parse_args(char *line, char * sep){
   char *curr = line;
   int count = 0;
   while (curr){
-    ans[count] = strsep(&curr, sep);
-    count++;
+    if (!strcmp(sep, " ")){
+      char *temp = strsep(&curr, sep);
+      if(strcmp(temp , "")){
+        ans[count]= temp;
+        count++;
+      }
+    }
+    else{
+      ans[count] = strsep(&curr, sep);
+      count++;
+    }
   }
   return ans;
 }
