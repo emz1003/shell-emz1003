@@ -114,6 +114,7 @@ void pipes(char ** args, int * status){
       input++;
       args++;
     }
+    args++;
     while(args) {
       *output = *args;
       output++;
