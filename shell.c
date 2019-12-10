@@ -26,8 +26,17 @@ char ** parse_args(char *line, char * sep){
   char *curr = line;
   int count = 0;
   while (curr){
-    ans[count] = strsep(&curr, sep);
-    count++;
+    if (!strcmp(sep, " ")){
+      char *temp = strsep(&curr, sep);
+      if(strcmp(temp , "")){
+        ans[count]= temp;
+        count++;
+      }
+    }
+    else{
+      ans[count] = strsep(&curr, sep);
+      count++;
+    }
   }
   return ans;
 }
@@ -56,25 +65,25 @@ void redirect(char** args, int * status){
      }
   }
 
-  // int f;
-  // int backup;
-  // f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
-  // if (f < 0){
-  //   f = open(file, O_RDWR);
-  // }
-  // if (strcmp(redir, ">")){ //then redir is <
-  //   printf("%d\n", f);
-  //   backup = dup(STDIN_FILENO);
-  //   dup2(f, STDIN_FILENO);
-  // }
-  // else { //then redir is >
-  //   printf("%d\n", f);
-  //   backup = dup(STDOUT_FILENO);
-  //   dup2(STDOUT_FILENO, f);
-  // }
-   fork_run(argseg, status);
-  // close(f);
-  // dup2(f, backup);
+  int f;
+  int backup;
+  f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
+  if (f < 0){
+    f = open(file, O_RDWR);
+  }
+  if (strcmp(redir, ">")){ //then redir is <
+    printf("%d\n", f);
+    backup = dup(STDIN_FILENO);
+    dup2(f, STDIN_FILENO);
+  }
+  else { //then redir is >
+    printf("%d\n", f);
+    backup = dup(STDOUT_FILENO);
+    dup2(STDOUT_FILENO, f);
+  }
+  fork_run(argseg, status);
+  close(f);
+  dup2(f, backup);
 }
 
 int is_redir(char ** args) {
