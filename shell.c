@@ -69,24 +69,23 @@ void redirect(char ** args, int * status){
   // create file if not exists and openwith RDWR or else open and RDWR
   int f;
   int backup;
+  int io;
   f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
   if (f < 0){
     f = open(file, O_RDWR);
   }
 
   if (strcmp(redir, ">")){ //then redir is <
-    printf("got redir is <\n");
-    backup = dup(STDIN_FILENO); // backup created for STDIN
-    dup2(f, STDIN_FILENO);
+    io = STDIN_FILENO;
   }
   else { //then redir is >
-    printf("got redir is >\n");
-    backup = dup(STDOUT_FILENO);
-    dup2(f, STDOUT_FILENO);
+    io = STDOUT_FILENO;
   }
+  backup = dup(io); // backup created for STDIN
+  dup2(f, io);      // f takes the place of STDIN_FILENO
   fork_run(argseg, status);
-  close(STDOUT_FILENO);
-  dup2(backup, STDOUT_FILENO);
+  close(f);
+  dup2(backup, io);
 }
 
 int is_redir(char ** args) {
