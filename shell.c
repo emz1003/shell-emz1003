@@ -10,6 +10,8 @@ int execute(char * line) {
       fork_run(args, &status);
     } else if (is_redir(args)) {
       redirect(args, &status);
+    } else if (is_pipe(args)) {
+      pipe(args, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
       change_dir(*++args);
     } else { // returns true for ending the program
@@ -94,6 +96,26 @@ int is_redir(char ** args) {
   }
   return 0;
 }
+
+int is_pipe(char **args){
+  while(*args) {
+    if (!strcmp(*args, "|")) // if args has redirect symbols
+      return 1;
+    args++;
+  }
+  return 0;
+}
+
+void pipes(char ** args, int * status){
+  //char *redir;   // holds |
+  char **argseg = malloc(1024); // holds the arguments after |
+  char *file;
+  while (args){
+    if (!strcmp(*args, "|") //if args is up to the |
+      argseg = *++args;
+      break;
+    }
+  }
 
 void fork_run(char ** args, int * status) {
   int child = fork();
