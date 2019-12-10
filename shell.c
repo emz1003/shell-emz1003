@@ -36,18 +36,19 @@ void change_dir(char *input){
   chdir(input);
 }
 
-void redirect(char** args, int * status){
+void redirect(char ** args, int * status){
     // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
     // find filename by taking the argument after the < or >
     char *redir;   // holds < or >
     char **argseg = malloc(1024); // holds the arguments before < or >
+    char ** argseg_mem = argseg;
     char *file;
     while (args)
     {
       if (strcmp(*args, ">") && strcmp(*args, "<"))
       { //if *argmem is not < or >
-        *argseg = *args;
-        argseg++;
+        *argseg_mem = *args;
+        argseg_mem++;
         args++;
       } else {
         redir = *args;
@@ -56,25 +57,27 @@ void redirect(char** args, int * status){
      }
   }
 
-  // int f;
-  // int backup;
-  // f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
-  // if (f < 0){
-  //   f = open(file, O_RDWR);
-  // }
-  // if (strcmp(redir, ">")){ //then redir is <
-  //   printf("%d\n", f);
-  //   backup = dup(STDIN_FILENO);
-  //   dup2(f, STDIN_FILENO);
-  // }
-  // else { //then redir is >
-  //   printf("%d\n", f);
-  //   backup = dup(STDOUT_FILENO);
-  //   dup2(STDOUT_FILENO, f);
-  // }
-   fork_run(argseg, status);
-  // close(f);
-  // dup2(f, backup);
+  // create file if not exists and openwith RDWR or else open and RDWR
+  int f;
+  int backup;
+  f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
+  if (f < 0){
+    f = open(file, O_RDWR);
+  }
+
+  if (strcmp(redir, ">")){ //then redir is <
+    printf("got redir is <\n");
+    backup = dup(STDIN_FILENO); // backup created for STDIN
+    dup2(f, STDIN_FILENO);
+  }
+  else { //then redir is >
+    printf("got redir is >\n");
+    backup = dup(STDOUT_FILENO);
+    dup2(f, STDOUT_FILENO);
+  }
+  fork_run(argseg, status);
+  close(STDOUT_FILENO);
+  dup2(backup, STDOUT_FILENO);
 }
 
 int is_redir(char ** args) {

@@ -3,7 +3,8 @@
 int main (int argc, char *argv[]) {
     char path[256];
     char input[1024];
-    while(1) {
+    int parent = getpid();
+    while(getpid() == parent) {
         getcwd(path, 256);
         printf("%s[shell]: ", path);
         fgets(input, sizeof input, stdin);
