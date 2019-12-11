@@ -2,10 +2,12 @@
 
 int execute(char * line) {
   char ** commands = parse_args(line, ";");
+  char ** commandscpy = commands;
   while(*commands) {
     char *command = calloc(1024, sizeof(char));
     strcpy(command, *commands);
     char ** args = parse_args(command, " "); // string array of cammands
+    char ** argscpy = args;
     int status;
     if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(args) && !is_pipe(args)) // if not cd or exit
     {
@@ -23,15 +25,17 @@ int execute(char * line) {
     } else { // returns true for ending the program
       return 1;
     }
-    commands++;
     free(command);
+    free(argscpy);
+    commands++;
   }
+
+    free(commandscpy);
   return 0;
 }
 
 char ** parse_args(char *line, char * sep){
-  char ** ans;
-  ans = malloc(1024);
+  char ** ans = calloc(1024, sizeof(char));
   char *curr = line;
   int count = 0;
   while (curr){
@@ -51,11 +55,7 @@ char ** parse_args(char *line, char * sep){
 }
 
 void change_dir(char *input){
-  char *homedir;
-  if ((homedir = getenv("HOME")) == NULL) {
-    pw = getpwuid(getuid());
-    homedir = pw->pw_dir;
-  }
+  char * homedir = get_homedir();
   if(strcmp("~", input)){
     chdir(input);
   }
@@ -64,11 +64,20 @@ void change_dir(char *input){
   }
 }
 
+char * get_homedir() {
+  char * homedir;
+  if ((homedir = getenv("HOME"))){
+    pw = getpwuid(getuid());
+    return pw->pw_dir;
+  }
+  return NULL;
+}
+
 void redirect(char ** args, int * status){
     // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
     // find filename by taking the argument after the < or >
     char *redir;   // holds < or >
-    char **argseg = malloc(1024); // holds the arguments before < or >
+    char **argseg = calloc(1024, sizeof(char)); // holds the arguments before < or >
     char ** argseg_mem = argseg;
     char *file;
     while (args)
@@ -105,6 +114,7 @@ void redirect(char ** args, int * status){
   fork_run(argseg, status);
   close(f);
   dup2(backup, io);
+  // free(argseg);
 }
 
 int is_redir(char ** args) {
