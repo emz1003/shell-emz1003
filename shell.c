@@ -120,6 +120,7 @@ void pipes(char ** args, int * status){
       output++;
       args++;
     }
+  printf("%s %s\n", *input, *output);
   popen(input, output);
   fork_run(output, status);
   free(output);
