@@ -12,10 +12,10 @@ int execute(char * line) {
       redirect(args, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
         char *temp = *++args;
-        if(temp){
+        if(temp){ //if cd isn't inputted by itself, just do cd on the input
           change_dir(temp);
         }
-        else {change_dir("~");}
+        else {change_dir("~");} //otherwise, go to the home directory!
     } else { // returns true for ending the program
       return 1;
     }
