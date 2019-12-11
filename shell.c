@@ -44,7 +44,8 @@ char ** parse_args(char *line, char * sep){
 void change_dir(char *input){
   char *homedir;
   if ((homedir = getenv("HOME")) == NULL) {
-    homedir = getpwuid(getuid())->pw_dir;
+    struct passwd *pw = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
   }
   if(strcmp("~", input)){
     chdir(input);
