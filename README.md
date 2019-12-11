@@ -29,11 +29,14 @@ void change_dir( char * input);
   //Input is the directory that the function is changing into
   //This change_dir function acts as the cd function for a shell
 
-void redirect(char* redir, char* file);
+void redirect(char** args, int * status);
+  //Returns nothing
+  //Args is the array of parsed tokens that is being read from the command line
+  //This redirect function redirects files using dup2 and dup
 
 int is_redir(char ** args);
   //Returns an int: 0 if no redir symbol and 1 if redir symbol is present
-  //Args is the array of parsed tokens that are being read from the command line
+  //Args is the array of parsed tokens that is being read from the command line
   //This is_redir function checks to see if the command line input has a redirecting character
 
 void fork_run(char ** args, int * status);
