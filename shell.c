@@ -47,7 +47,7 @@ void change_dir(char *input){
     pw = getpwuid(getuid());
     homedir = pw->pw_dir;
   }
-  if(strcmp("~", input)){
+  if(strcmp("~", input) || strcmp("", input)){
     chdir(input);
   }
   else {
