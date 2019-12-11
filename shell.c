@@ -1,5 +1,4 @@
 #include "shell.h"
-struct char *pw = getpwuid(getuid());
 
 int execute(char * line) {
   char ** commands = parse_args(line, ";");
