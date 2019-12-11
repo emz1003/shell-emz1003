@@ -1,0 +1,8 @@
+  PID TTY           TIME CMD
+ 5788 ttys000    0:00.09 -bash
+  683 ttys002    0:00.23 /bin/bash -l
+  886 ttys003    0:00.54 /bin/bash -l
+59562 ttys003    0:00.01 /Library/Developer/CommandLineTools/usr/bin/make run
+59563 ttys003    0:00.00 ./program
+ 1141 ttys004    0:00.08 /bin/bash -l
+27969 ttys005    0:00.04 /bin/bash -l

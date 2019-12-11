@@ -15,7 +15,11 @@ int execute(char * line) {
     } else if (is_pipe(args)) {
       pipes(*commands, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
-      change_dir(*++args);
+        char *temp = *++args;
+        if(temp){ //if cd isn't inputted by itself, just do cd on the input
+          change_dir(temp);
+        }
+        else {change_dir("~");} //otherwise, go to the home directory!
     } else { // returns true for ending the program
       return 1;
     }
@@ -47,21 +51,32 @@ char ** parse_args(char *line, char * sep){
 }
 
 void change_dir(char *input){
-  chdir(input);
+  char *homedir;
+  if ((homedir = getenv("HOME")) == NULL) {
+    pw = getpwuid(getuid());
+    homedir = pw->pw_dir;
+  }
+  if(strcmp("~", input)){
+    chdir(input);
+  }
+  else {
+    chdir(homedir);
+  }
 }
 
-void redirect(char** args, int * status){
+void redirect(char ** args, int * status){
     // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
     // find filename by taking the argument after the < or >
     char *redir;   // holds < or >
     char **argseg = malloc(1024); // holds the arguments before < or >
+    char ** argseg_mem = argseg;
     char *file;
     while (args)
     {
       if (strcmp(*args, ">") && strcmp(*args, "<"))
       { //if *argmem is not < or >
-        *argseg = *args;
-        argseg++;
+        *argseg_mem = *args;
+        argseg_mem++;
         args++;
       } else {
         redir = *args;
@@ -70,25 +85,26 @@ void redirect(char** args, int * status){
      }
   }
 
+  // create file if not exists and openwith RDWR or else open and RDWR
   int f;
   int backup;
+  int io;
   f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
   if (f < 0){
     f = open(file, O_RDWR);
   }
+
   if (strcmp(redir, ">")){ //then redir is <
-    printf("%d\n", f);
-    backup = dup(STDIN_FILENO);
-    dup2(f, STDIN_FILENO);
+    io = STDIN_FILENO;
   }
   else { //then redir is >
-    printf("%d\n", f);
-    backup = dup(STDOUT_FILENO);
-    dup2(STDOUT_FILENO, f);
+    io = STDOUT_FILENO;
   }
+  backup = dup(io); // backup created for STDIN
+  dup2(f, io);      // f takes the place of STDIN_FILENO
   fork_run(argseg, status);
   close(f);
-  dup2(f, backup);
+  dup2(backup, io);
 }
 
 int is_redir(char ** args) {

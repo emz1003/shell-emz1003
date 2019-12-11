@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <pwd.h>
 
 int execute(char * line);
 char ** parse_args(char * line, char * sep);
@@ -16,3 +17,4 @@ void fork_run( char ** args, int * status);
 int is_redir(char **args);
 void pipes(char * command, int * status);
 int is_pipe(char **args);
+struct passwd *pw;
