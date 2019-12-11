@@ -11,7 +11,10 @@ int execute(char * line) {
     } else if (is_redir(args)) {
       redirect(args, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
-      change_dir(*++args);
+        if(*++args){
+          change_dir(*++args);
+        }
+        else {change_dir("~");}
     } else { // returns true for ending the program
       return 1;
     }
@@ -47,7 +50,7 @@ void change_dir(char *input){
     pw = getpwuid(getuid());
     homedir = pw->pw_dir;
   }
-  if(strcmp("~", input) || strcmp("", input)){
+  if(strcmp("~", input)){
     chdir(input);
   }
   else {
