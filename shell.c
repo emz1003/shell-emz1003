@@ -126,7 +126,6 @@ int is_pipe(char **args){
 }
 
 void pipes(char * command, int * status){
-  printf("command recieved: %s\n", command);
   FILE * f = popen(command, "w");
   pclose(f);
 }

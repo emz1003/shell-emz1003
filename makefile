@@ -7,4 +7,4 @@ shell.o: shell.c shell.h
 run:
 	./program
 clean:
-	rm program *.o
+	rm program *.o *.gch
