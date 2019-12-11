@@ -14,5 +14,5 @@ void change_dir( char * input);
 void redirect(char** args, int * status);
 void fork_run( char ** args, int * status);
 int is_redir(char **args);
-void pipes(char ** args, int * status);
+void pipes(char * command, int * status);
 int is_pipe(char **args);

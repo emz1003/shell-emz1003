@@ -3,21 +3,24 @@
 int execute(char * line) {
   char ** commands = parse_args(line, ";");
   while(*commands) {
-    char ** args = parse_args(*commands, " "); // string array of cammands
+    char *command = calloc(1024, sizeof(char));
+    strcpy(command, *commands);
+    char ** args = parse_args(command, " "); // string array of cammands
     int status;
-    if (strcmp(line, "cd") && strcmp(line, "exit") && !is_redir(args)) // if not cd or exit
+    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(args) && !is_pipe(args)) // if not cd or exit
     {
       fork_run(args, &status);
     } else if (is_redir(args)) {
       redirect(args, &status);
     } else if (is_pipe(args)) {
-      pipes(args, &status);
+      pipes(*commands, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
       change_dir(*++args);
     } else { // returns true for ending the program
       return 1;
     }
     commands++;
+    free(command);
   }
   return 0;
 }
@@ -99,34 +102,18 @@ int is_redir(char ** args) {
 
 int is_pipe(char **args){
   while(*args) {
-    if (!strcmp(*args, "|")) // if args has redirect symbols
+    if (!strcmp(*args, "|")) // if args has pipe
       return 1;
     args++;
   }
   return 0;
 }
 
-void pipes(char ** args, int * status){
-  char **output = malloc(1024); // holds the arguments after |
-  char **input = malloc(1024); //holds the arguments before |
-    while(strcmp(*args, "|")){ //if args is not |
-      *input = *args;
-      input++;
-      args++;
-    }
-    args++;
-    while(args) {
-      *output = *args;
-      output++;
-      args++;
-    }
-  printf("%s %s\n", *input, *output);
-  popen(input, output);
-  fork_run(output, status);
-  free(output);
-  free(input);
+void pipes(char * command, int * status){
+  printf("command recieved: %s\n", command);
+  FILE * f = popen(command, "w");
+  pclose(f);
 }
-
 
 void fork_run(char ** args, int * status) {
   int child = fork();
