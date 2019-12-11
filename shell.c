@@ -11,8 +11,9 @@ int execute(char * line) {
     } else if (is_redir(args)) {
       redirect(args, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
-        if(*++args){
-          change_dir(*++args);
+        char *temp = *++args;
+        if(temp){
+          change_dir(temp);
         }
         else {change_dir("~");}
     } else { // returns true for ending the program
