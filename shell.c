@@ -1,4 +1,5 @@
 #include "shell.h"
+struct char *pw = getpwuid(getuid());
 
 int execute(char * line) {
   char ** commands = parse_args(line, ";");
@@ -44,7 +45,6 @@ char ** parse_args(char *line, char * sep){
 void change_dir(char *input){
   char *homedir;
   if ((homedir = getenv("HOME")) == NULL) {
-    char *pw = getpwuid(getuid());
     const char *homedir = pw->pw_dir;
   }
   if(strcmp("~", input)){
