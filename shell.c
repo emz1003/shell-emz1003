@@ -42,7 +42,16 @@ char ** parse_args(char *line, char * sep){
 }
 
 void change_dir(char *input){
-  chdir(input);
+  char *homedir;
+  if ((homedir = getenv("HOME")) == NULL) {
+    homedir = getpwuid(getuid())->pw_dir;
+  }
+  if(strcmp("~", input)){
+    chdir(input);
+  }
+  else {
+    chdir(homedir);
+  }
 }
 
 void redirect(char ** args, int * status){
