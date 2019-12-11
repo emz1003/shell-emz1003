@@ -15,4 +15,4 @@ void change_dir( char * input);
 void redirect(char** args, int * status);
 void fork_run( char ** args, int * status);
 int is_redir(char **args);
-struct char *pw = getpwuid(getuid());
+struct passwd *pw = getpwuid(getuid());
