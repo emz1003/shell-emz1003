@@ -3,9 +3,9 @@
 Kaitlyn Lau and Emily Zhang Period 10
 Systems Programming Project 1
 
-Features:
-  -Forks and executes commands!
-  -Parses multiple commands on on line!
+Features: <br />
+  -Forks and executes commands!  <br />
+  -Parses multiple commands on on line! <br />
   -Keeps prompting the user for a command until "exit" is inputted or other shortcuts such as CTRL-C are used.
   -Both cd and exit can be used in our shell.
   -Parses multiple commands on one line!
