@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <pwd.h>
 
+//Function header descriptions are in the readme!
 int execute(char * line);
 char ** parse_args(char * line, char * sep);
 void change_dir( char * input);
