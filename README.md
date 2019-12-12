@@ -13,15 +13,15 @@ Features: <br />
   -Can run simple pipes! <br />
   -Will return to the home directory if "cd ~" is entered or just cd by itself <br />
 
-Attempted:
+Attempted: <br />
 
-Bugs:
+Bugs: <br />
   -Cannot find foo for some reason, cat foo and rm foo
-  
+
 
 Files & Function Headers:
 
-shell.c
+shell.c <br />
   int execute(char * line); <br />
     -Returns 0 to continue executing, 1 to end the program <br />
     -Line is the command line input <br />
