@@ -19,4 +19,5 @@ int is_redir(char **args);
 void pipes(char * command, int * status);
 int is_pipe(char **args);
 char * get_homedir();
+char * tildapath (char * path);
 struct passwd *pw;

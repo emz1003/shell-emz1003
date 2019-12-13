@@ -164,3 +164,19 @@ void fork_run(char ** args, int * status) {
     wait(status);
   }
 }
+
+char * tildapath (char * path){
+  char * homedirec = calloc(256, 1);
+  char * temppath = calloc(256, 1); //For replacing "~/" with the home directory
+  strcpy(temppath, path);
+  strncpy(homedirec, path, strlen(get_homedir()));
+  if(!strcmp(homedirec, get_homedir())){ //seeing if the home directory path is present
+      char * temp = calloc(256, 1);
+      strncpy(temp, temppath + strlen(get_homedir()), strlen(temppath)-strlen(get_homedir()));
+      strcpy(temppath, "~");
+      strcat(temppath, temp); //adds the rest of the path to ~/
+      free(temp);
+  }
+  free (homedirec);
+  return temppath;
+}

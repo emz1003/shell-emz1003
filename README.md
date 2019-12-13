@@ -66,3 +66,8 @@ shell.c <br />
     -Returns nothing<br />
     -Command is the command line input, status is a variable storing a number that tells you how the process ended<br />
     -This pipes function implements simple pipes using popen()<br />
+
+  char * tildapath (char * path); <br />
+    -Returns a char* of the new path with ~/ replacing the home directory <br />
+    -Command is the command line input, status is a variable storing a number that tells you how the process ended<br />
+    -This tildapath function takes in the path and creates a new path with the home directory with a tilda<br />
