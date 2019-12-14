@@ -6,7 +6,9 @@ int main (int argc, char *argv[]) {
     int parent = getpid();
     while(getpid() == parent) {
         getcwd(path, 256);
-        printf("%s[shell]: ", tildapath(path));
+        char * temp;
+        temp = tildapath(path);
+        printf("%s[shell]: ", temp);
         fgets(input, sizeof input, stdin);
         input[strlen(input) - 1] = '\0';
         if(execute(input))
