@@ -18,6 +18,7 @@ Attempted: <br />
 
 Bugs: <br />
   -When you do ./program < TEST_COMMANDS.txt, it prints out our shell directory many times in the beginning and end of the file, not sure why <br />
+  -Running the program may also produce a seg fault occasionally with replacing the home directory with ~/ <br />
 
 Files & Function Headers:
 
