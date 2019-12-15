@@ -17,7 +17,7 @@ Features: <br />
 Attempted: <br />
 
 Bugs: <br />
-  -When you do .program < TEST_COMMANDS.txt, it prints out our shell directory many times in the beginning and end of the file, not sure why <br />
+  -When you do ./program < TEST_COMMANDS.txt, it prints out our shell directory many times in the beginning and end of the file, not sure why <br />
 
 Files & Function Headers:
 
