@@ -9,7 +9,7 @@ int execute(char * line) {
     char ** args = parse_args(command, " "); // string array of cammands
     char ** argscpy = args;
     int status;
-    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(*commands) && !is_pipe(args)) // if not cd or exit
+    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(*commands) && !is_pipe(args)) // if not cd or exit or redir or pipe
     {
       fork_run(args, &status);
     } else if (is_redir(*commands)) {
