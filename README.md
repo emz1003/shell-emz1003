@@ -12,6 +12,7 @@ Features: <br />
   -Redirects using >, <! <br />
   -Can run simple pipes! <br />
   -Will return to the home directory if "cd ~" is entered or just cd by itself <br />
+  -Replaces the home directory with ~/ <br />
 
 Attempted: <br />
 

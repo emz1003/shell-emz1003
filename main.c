@@ -11,8 +11,9 @@ int main (int argc, char *argv[]) {
         printf("%s[shell]: ", temp);
         fgets(input, sizeof input, stdin);
         input[strlen(input) - 1] = '\0';
-        if(execute(input))
+        if(execute(input)){
             break;
+        }
     }
     return 0;
 }

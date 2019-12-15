@@ -4,16 +4,16 @@ int execute(char * line) {
   char ** commands = parse_args(line, ";");
   char ** commandscpy = commands;
   while(*commands) {
-    char *command = calloc(1024, sizeof(char));
+    char *command = calloc(1024, sizeof(char)); // strsep will be used on this
     strcpy(command, *commands);
     char ** args = parse_args(command, " "); // string array of cammands
     char ** argscpy = args;
     int status;
-    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(args) && !is_pipe(args)) // if not cd or exit
+    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(*commands) && !is_pipe(args)) // if not cd or exit
     {
       fork_run(args, &status);
-    } else if (is_redir(args)) {
-      redirect(args, &status);
+    } else if (is_redir(*commands)) {
+      redirect(*commands, &status);
     } else if (is_pipe(args)) {
       pipes(*commands, &status);
     } else if (!strcmp(*args, "cd")){ // change directory
@@ -62,8 +62,7 @@ void change_dir(char *input){
   else {
     chdir(homedir);
     if(errno){ //see if any error
-      printf("Error number: %d\n", errno);
-      printf("Error message: %s\n", strerror(errno));
+      printf("%d: %s\n", errno, strerror(errno));
     }
   }
 }
@@ -77,59 +76,64 @@ char * get_homedir() {
   return NULL;
 }
 
-void redirect(char ** args, int * status){
+void redirect(char * command, int * status){
     // prior to finding <>, save the args to another argseg then after finding > or <, set that to redir
+    char *arro = calloc(64, sizeof(char));
+    int a = 0;
+    for (int i = 0; i < 64; i++) {
+      if((command[i] == '>') || (command[i] == '<')) {
+        arro[a] = command[i];
+        a++;
+      }
+    }
+    arro[a] = 0;
+
     // find filename by taking the argument after the < or >
-    char *redir;   // holds < or >
-    char **argseg = calloc(1024, sizeof(char)); // holds the arguments before < or >
-    char ** argseg_mem = argseg;
-    char *file;
-    while (args)
-    {
-      if (strcmp(*args, ">") && strcmp(*args, "<"))
-      { //if *argmem is not < or >
-        *argseg_mem = *args;
-        argseg_mem++;
-        args++;
-      } else {
-        redir = *args;
-        file = *++args;
-        break;
-     }
-  }
+    char ** args = parse_args(command, "<>");
+    char ** parsed_arg = parse_args(args[0], " ");
+    int io[64];
+    int f[64];
+    int backup[64];
+    for( int i = 0; args[i+1]; i++) {
+      char * file = args[i+1];
 
-  // create file if not exists and openwith RDWR or else open and RDWR
-  int f;
-  int backup;
-  int io;
-  f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
-  if(errno){ //see if any error
-    printf("Error number: %d\n", errno);
-    printf("Error message: %s\n", strerror(errno));
-  }
-  if (f < 0){
-    f = open(file, O_RDWR);
-  }
+      char **arr = parse_args(file, " ");
+      file = *arr;
 
-  if (strcmp(redir, ">")){ //then redir is <
-    io = STDIN_FILENO;
-  }
-  else { //then redir is >
-    io = STDOUT_FILENO;
-  }
-  backup = dup(io); // backup created for STDIN
-  dup2(f, io);      // f takes the place of STDIN_FILENO
-  fork_run(argseg, status);
-  close(f);
-  dup2(backup, io);
-  // free(argseg);
+      f[i] = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
+      if (f[i] < 0)
+      {
+        f[i] = open(file, O_RDWR);
+      }
+
+      if (arro[i] == '<')
+      { //then redir is <
+        io[i] = STDIN_FILENO;
+      }
+      else
+      { //then redir is >
+        io[i] = STDOUT_FILENO;
+      }
+      backup[i] = dup(io[i]); // backup created for io
+      dup2(f[i], io[i]);      // f takes the place of io
+    }
+
+    fork_run(parsed_arg, status);
+
+    for(int i = 0; f[i]; i++){
+      close(f[i]);
+      dup2(backup[i], io[i]);
+    }
+    // // create file if not exists and openwith RDWR or else open and RDWR
+    free(parsed_arg);
+    free(args);
 }
 
-int is_redir(char ** args) {
-  while(*args) {
-    if (!strcmp(*args, ">") || !strcmp(*args, "<")) // if args has redirect symbols
+int is_redir(char * command) {
+  while(*command) {
+    if ((*command == '>') || (*command == '<')) // has redirect symbols
       return 1;
-    args++;
+    command++;
   }
   return 0;
 }
@@ -150,10 +154,6 @@ void pipes(char * command, int * status){
 
 void fork_run(char ** args, int * status) {
   int child = fork();
-  if(errno){ //see if any error
-    printf("Error number: %d\n", errno);
-    printf("Error message: %s\n", strerror(errno));
-  }
   if (child == 0)
   {
     execvp(*args, args);
