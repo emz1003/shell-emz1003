@@ -15,7 +15,7 @@ char ** parse_args(char * line, char * sep);
 void change_dir( char * input);
 void redirect(char** args, int * status);
 void fork_run( char ** args, int * status);
-int is_redir(char **args);
+int is_redir(char * command);
 void pipes(char * command, int * status);
 int is_pipe(char **args);
 char * get_homedir();

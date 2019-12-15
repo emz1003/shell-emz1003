@@ -4,15 +4,15 @@ int execute(char * line) {
   char ** commands = parse_args(line, ";");
   char ** commandscpy = commands;
   while(*commands) {
-    char *command = calloc(1024, sizeof(char));
+    char *command = calloc(1024, sizeof(char)); // strsep will be used on this
     strcpy(command, *commands);
     char ** args = parse_args(command, " "); // string array of cammands
     char ** argscpy = args;
     int status;
-    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(args) && !is_pipe(args)) // if not cd or exit
+    if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(*commands) && !is_pipe(args)) // if not cd or exit
     {
       fork_run(args, &status);
-    } else if (is_redir(args)) {
+    } else if (is_redir(*commands)) {
       redirect(args, &status);
     } else if (is_pipe(args)) {
       pipes(*commands, &status);
@@ -123,11 +123,11 @@ void redirect(char ** args, int * status){
   // free(argseg);
 }
 
-int is_redir(char ** args) {
-  while(*args) {
-    if (!strcmp(*args, ">") || !strcmp(*args, "<")) // if args has redirect symbols
+int is_redir(char * command) {
+  while(*command) {
+    if ((*command == '>') || (*command == '<')) // has redirect symbols
       return 1;
-    args++;
+    command++;
   }
   return 0;
 }
@@ -148,9 +148,6 @@ void pipes(char * command, int * status){
 
 void fork_run(char ** args, int * status) {
   int child = fork();
-  if(errno){ //see if any error
-    printf("%d: %s\n", errno, strerror(errno));
-  }
   if (child == 0)
   {
     execvp(*args, args);
