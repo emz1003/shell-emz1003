@@ -62,8 +62,7 @@ void change_dir(char *input){
   else {
     chdir(homedir);
     if(errno){ //see if any error
-      printf("Error number: %d\n", errno);
-      printf("Error message: %s\n", strerror(errno));
+      printf("%d: %s\n", errno, strerror(errno));
     }
   }
 }
@@ -104,8 +103,7 @@ void redirect(char ** args, int * status){
   int io;
   f = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
   if(errno){ //see if any error
-    printf("Error number: %d\n", errno);
-    printf("Error message: %s\n", strerror(errno));
+    printf("%d: %s", errno, strerror(errno));
   }
   if (f < 0){
     f = open(file, O_RDWR);
@@ -151,8 +149,7 @@ void pipes(char * command, int * status){
 void fork_run(char ** args, int * status) {
   int child = fork();
   if(errno){ //see if any error
-    printf("Error number: %d\n", errno);
-    printf("Error message: %s\n", strerror(errno));
+    printf("%d: %s\n", errno, strerror(errno));
   }
   if (child == 0)
   {
