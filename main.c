@@ -9,8 +9,9 @@ int main (int argc, char *argv[]) {
         printf("%s[shell]: ", path);
         fgets(input, sizeof input, stdin);
         input[strlen(input) - 1] = '\0';
-        if(execute(input))
+        if(execute(input)){
             break;
+        }
     }
     return 0;
 }

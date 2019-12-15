@@ -1,3 +1,17 @@
- hello i am foo
- i am very useless
- use me for your tests, i don't have anything else to do anyway
+total 1992
+drwxr-xr-x  16 emilyzhang  staff     512 Dec 15 00:57 .
+drwxr-xr-x  10 emilyzhang  staff     320 Dec 14 23:13 ..
+drwxr-xr-x  15 emilyzhang  staff     480 Dec 14 23:25 .git
+-rw-r--r--   1 emilyzhang  staff     442 Dec 11 01:26 .gitignore
+-rw-r--r--   1 emilyzhang  staff    3106 Dec 14 23:00 README.md
+-rw-r--r--   1 emilyzhang  staff     298 Dec 14 23:14 TEST_COMMANDS.txt
+-rw-r--r--   1 emilyzhang  staff     120 Dec 15 00:57 foo
+-rw-r--r--   1 emilyzhang  staff     373 Dec 14 23:00 main.c
+-rw-r--r--   1 emilyzhang  staff    1324 Dec 15 00:50 main.o
+-rw-r--r--   1 emilyzhang  staff     239 Dec 11 11:38 makefile
+-rw-r--r--   1 emilyzhang  staff     325 Dec 11 01:13 output
+-rwxr-xr-x   1 emilyzhang  staff   14296 Dec 15 00:57 program
+-rw-r--r--   1 emilyzhang  staff    3821 Dec 15 00:57 shell.c
+-rw-r--r--   1 emilyzhang  staff     604 Dec 15 00:48 shell.h
+-rw-r--r--   1 emilyzhang  staff  952572 Dec 15 00:50 shell.h.gch
+-rw-r--r--   1 emilyzhang  staff    5008 Dec 15 00:57 shell.o
