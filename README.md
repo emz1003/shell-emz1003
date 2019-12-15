@@ -17,8 +17,7 @@ Features: <br />
 Attempted: <br />
 
 Bugs: <br />
-  -Cannot find foo for some reason, cat foo and rm foo
-
+  -When you do .program < TEST_COMMANDS.txt, it prints out our shell directory many times in the beginning and end of the file, not sure why <br />
 
 Files & Function Headers:
 
