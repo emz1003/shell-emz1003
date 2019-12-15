@@ -12,7 +12,7 @@ int main (int argc, char *argv[]) {
         fgets(input, sizeof input, stdin);
         input[strlen(input) - 1] = '\0';
         if(execute(input)){
-            break;
+            return 0;
         }
     }
     return 0;
