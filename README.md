@@ -43,9 +43,9 @@ shell.c <br />
     -Nothing is inputted into the function <br />
     -This get_homedir function gets the path of the home directory <br />
 
-  void redirect(char** args, int * status);<br />
+  void redirect(char* command, int * status);<br />
     -Returns nothing<br />
-    -Args is the array of parsed tokens that is being read from the command line, status is a variable storing a number that tells you how the process ended<br />
+    -Command is the entire input that is being read from the command line, status is a variable storing a number that tells you how the process ended<br />
     -This redirect function redirects files using dup2 and dup<br />
 
   int is_redir(char ** args);<br />
