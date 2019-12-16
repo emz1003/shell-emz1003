@@ -7,6 +7,9 @@ int execute(char * line) {
     char *command = calloc(1024, sizeof(char)); // strsep will be used on this
     strcpy(command, *commands);
     char ** args = parse_args(command, " "); // string array of cammands
+    if(!*args) {
+      break;
+    }
     char ** argscpy = args;
     int status;
     if (strcmp(*args, "cd") && strcmp(*args, "exit") && !is_redir(*commands) && !is_pipe(args)) // if not cd or exit or redir or pipe
