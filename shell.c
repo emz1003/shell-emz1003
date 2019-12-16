@@ -157,6 +157,9 @@ void fork_run(char ** args, int * status) {
   if (child == 0)
   {
     execvp(*args, args);
+    if(errno) {
+      printf("[shell]: %s: %d %s\n", *args, errno, strerror(errno));
+    }
     exit(0);
   }
   else
