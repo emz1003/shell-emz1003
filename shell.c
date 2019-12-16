@@ -100,10 +100,18 @@ void redirect(char * command, int * status){
       char **arr = parse_args(file, " ");
       file = *arr;
 
-      f[i] = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
-      if (f[i] < 0)
-      {
+      if(arro[i] == '>'){
+        f[i] = open(file, O_RDWR | O_EXCL | O_CREAT, 0644);
+        if (f[i] < 0)
+        {
+          f[i] = open(file, O_RDWR);
+        }
+      } else {
         f[i] = open(file, O_RDWR);
+        if(f[i] < 0) {
+          printf("[shell]:redir %s: %d %s\n", *args, errno, strerror(errno));
+          return;
+        }
       }
 
       if (arro[i] == '<')
