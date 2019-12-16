@@ -19,7 +19,7 @@ Attempted: <br />
 Bugs: <br />
   -When you do ./program < TEST_COMMANDS.txt, it prints out our shell directory many times in the beginning and end of the file, not sure why <br />
   -When you do ./program < TEST_COMMANDS.txt, it could also stop at the redirect test, even though redirecting works normally <br />
-  -Running the program may also produce a seg fault occasionally with replacing the home directory with ~/ <br />
+  -After we replaced the home directory with ~/, seg faults occur if you enter a blank line into the shell
 
 Files & Function Headers:
 
